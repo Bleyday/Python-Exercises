@@ -26,7 +26,7 @@ used.pack(side="right")
 word_frame = tk.Frame(root, highlightbackground="black", highlightthickness=1)
 word_frame.pack()
 
-strich_frame = tk.Frame(word_frame, highlightbackground="red", highlightthickness=1)
+strich_frame = tk.Frame(word_frame)
 strich_frame.pack(side="bottom")
 
 #Labels und Entrys
@@ -45,9 +45,9 @@ word_label.pack(side="top")
 letters = list(word)
 
 for i in range(len(letters)-1):
-    globals()['letter%s' % i] = tk.Label(word_frame, text="h")
+    globals()['letter%s' % i] = tk.Label(word_frame, text=" ", font="Consolas")
     globals()['letter%s' % i].pack(side="left")
-    tk.Label(strich_frame, text="_").pack(side="left")
+    tk.Label(strich_frame, text="_", font="Consolas").pack(side="left")
 
 letter_entry = tk.Entry(root, width=10)
 letter_entry.pack(side="bottom", pady=25)
