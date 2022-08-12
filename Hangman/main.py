@@ -57,6 +57,8 @@ def show():
         for i in range(len(letters)):
             if letters[i] == "e":
                 globals()["letter%s" %i].configure(text="e")
+    else:
+        #TODO:strich im hangman adden und buchstaben in "benutze Buchstaben aufnehmen"
 
 btn = tk.Button(root, text="Test", command=show)
 btn.pack()
