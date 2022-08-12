@@ -5,7 +5,7 @@ with open("Z:\Programming Stuff\Projects\Python-Exercises\Hangman\worliste.txt",
     for line in lines:
         words.append(line)
 
-spcial_char_map = {ord('ä'):'ae', ord('ü'):'ue', ord('ö'):'oe', ord('ß'):'ss'}
+spcial_char_map = {ord('ä'):'ae', ord('ü'):'ue', ord('ö'):'oe', ord('ß'):'ss', ord("Ö"):"Oe", ord("Ä"):"Ae", ord("Ü"):"Ue"}
 
 for i in range(len(words)):
     words[i] = words[i].translate(spcial_char_map)

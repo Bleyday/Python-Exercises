@@ -1,6 +1,7 @@
 import tkinter as tk
+from tkinter import messagebox
 import random
-from turtle import right
+from PIL import Image, ImageTk
 
 words = []
 with open("Hangman\worliste.txt", "r") as f:
@@ -34,10 +35,9 @@ used_label = tk.Label(used, text="benutzte Buchstaben")
 used_label.pack(side="top")
 
 #Hangman Canvas
-hangman_label = tk.Canvas(hangman, bd=2, relief="sunken",width=400, height=300)
+hangman_start = ImageTk.PhotoImage(Image.open("Hangman\Assets\hangman.png"))
+hangman_label = tk.Label(hangman, image = hangman_start)
 hangman_label.pack(pady=50)
-
-hangman_label.create_line(0, 0, 50, 20, fill="#476042", width=3)
 
 word_label = tk.Label(root, text=word)
 word_label.pack(side="top")
@@ -49,18 +49,102 @@ for i in range(len(letters)-1):
     globals()['letter%s' % i].pack(side="left")
     tk.Label(strich_frame, text="_", font="Consolas").pack(side="left")
 
+def check_entry_error(event):
+    try:
+        var = letter_entry.get()
+        if len(var) > 1 or isinstance(int(var), int):
+            messagebox.showerror('Entry Error','Pls only one character and no nmbrs')
+    except:
+        print("allowed")
+        show()
+ 
+def show():
+    eingabe = letter_entry.get()
+    if eingabe in letters:
+        for i in range(len(letters)):
+            if letters[i] == eingabe:
+                globals()["letter%s" %i].configure(text=eingabe)
+    if eingabe.upper() in letters:
+        letter0.configure(text=letters[0])
+    else:
+        draw_hangman()
+    letter_entry.delete(0)
+fails = 11
+def draw_hangman():
+    global fails
+    if fails == 11:
+        hangman_start = ImageTk.PhotoImage(Image.open("Hangman\Assets\hangman_1.png"))
+        hangman_label.configure(image=hangman_start)
+        hangman_label.image = hangman_start
+        fails = fails -1
+    elif fails == 10:
+        hangman_start = ImageTk.PhotoImage(Image.open("Hangman\Assets\hangman_2.png"))
+        hangman_label.configure(image=hangman_start)
+        hangman_label.image = hangman_start
+        fails = fails -1
+    elif fails == 9:
+        hangman_start = ImageTk.PhotoImage(Image.open("Hangman\Assets\hangman_3.png"))
+        hangman_label.configure(image=hangman_start)
+        hangman_label.image = hangman_start
+        fails = fails -1
+    elif fails == 8:
+        hangman_start = ImageTk.PhotoImage(Image.open("Hangman\Assets\hangman_4.png"))
+        hangman_label.configure(image=hangman_start)
+        hangman_label.image = hangman_start
+        fails = fails -1
+    elif fails == 7:
+        hangman_start = ImageTk.PhotoImage(Image.open("Hangman\Assets\hangman_5.png"))
+        hangman_label.configure(image=hangman_start)
+        hangman_label.image = hangman_start
+        fails = fails -1
+    elif fails == 6:
+        hangman_start = ImageTk.PhotoImage(Image.open("Hangman\Assets\hangman_6.png"))
+        hangman_label.configure(image=hangman_start)
+        hangman_label.image = hangman_start
+        fails = fails -1
+    elif fails == 5:
+        hangman_start = ImageTk.PhotoImage(Image.open("Hangman\Assets\hangman_7.png"))
+        hangman_label.configure(image=hangman_start)
+        hangman_label.image = hangman_start
+        fails = fails -1
+    elif fails == 4:
+        hangman_start = ImageTk.PhotoImage(Image.open("Hangman\Assets\hangman_8.png"))
+        hangman_label.configure(image=hangman_start)
+        hangman_label.image = hangman_start
+        fails = fails -1
+    elif fails == 3:
+        hangman_start = ImageTk.PhotoImage(Image.open("Hangman\Assets\hangman_9.png"))
+        hangman_label.configure(image=hangman_start)
+        hangman_label.image = hangman_start
+        fails = fails -1
+    elif fails == 2:
+        hangman_start = ImageTk.PhotoImage(Image.open("Hangman\Assets\hangman_10.png"))
+        hangman_label.configure(image=hangman_start)
+        hangman_label.image = hangman_start
+        fails = fails -1
+    elif fails == 1:
+        hangman_start = ImageTk.PhotoImage(Image.open("Hangman\Assets\hangman_11.png"))
+        hangman_label.configure(image=hangman_start)
+        hangman_label.image = hangman_start
+        print("verloren")
+def new_word():
+    for widget in word_frame.winfo_children():
+        widget.destroy()
+
+    word = words[random.randint(0, 239650)]
+    letters = list(word)
+
+    for i in range(len(letters)-1):
+        globals()['letter%s' % i] = tk.Label(word_frame, text=" ", font="Consolas")
+        globals()['letter%s' % i].pack(side="left")
+        tk.Label(strich_frame, text="_", font="Consolas").pack(side="left")
+    word_label.configure(text=word)
+
 letter_entry = tk.Entry(root, width=10)
 letter_entry.pack(side="bottom", pady=25)
+root.bind('<Return>', check_entry_error)
 
-def show():
-    if "e" in letters:
-        for i in range(len(letters)):
-            if letters[i] == "e":
-                globals()["letter%s" %i].configure(text="e")
-    else:
-        #TODO:strich im hangman adden und buchstaben in "benutze Buchstaben aufnehmen"
-
-btn = tk.Button(root, text="Test", command=show)
+btn = tk.Button(root, text="Test", command=new_word)
 btn.pack()
 
 #Run GUI
