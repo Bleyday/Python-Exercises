@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import messagebox
 import random
 from PIL import Image, ImageTk
+import sys
+import os
 
 words = []
 with open("Hangman\worliste.txt", "r") as f:
@@ -10,7 +12,7 @@ with open("Hangman\worliste.txt", "r") as f:
     for line in lines:
         words.append(line)
     
-word = words[random.randint(0, 239650)]
+word = words[random.randint(0, 239653)]
 
 #Hauptfenster
 root = tk.Tk()
@@ -132,16 +134,19 @@ def draw_hangman():
         print("verloren")
 def new_word():
     for widget in word_frame.winfo_children():
+        if isinstance(widget, Frame):
+            continue
         widget.destroy()
 
-    word = words[random.randint(0, 239650)]
+    word = words[random.randint(0, 239653)]
     letters = list(word)
 
     for i in range(len(letters)-1):
         globals()['letter%s' % i] = tk.Label(word_frame, text=" ", font="Consolas")
         globals()['letter%s' % i].pack(side="left")
         tk.Label(strich_frame, text="_", font="Consolas").pack(side="left")
-    word_label.configure(text=word)
+    
+    fails = 11
 
 letter_entry = tk.Entry(root, width=10)
 letter_entry.pack(side="bottom", pady=25)
