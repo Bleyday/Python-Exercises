@@ -3,7 +3,7 @@ import random
 from turtle import right
 
 words = []
-with open("Z:\Programming Stuff\Projects\Python-Exercises\Hangman\worliste.txt", "r") as f:
+with open("Hangman\worliste.txt", "r") as f:
     lines = f.readlines()
 
     for line in lines:
