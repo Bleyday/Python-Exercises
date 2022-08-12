@@ -39,8 +39,9 @@ hangman_start = ImageTk.PhotoImage(Image.open("Hangman\Assets\hangman.png"))
 hangman_label = tk.Label(hangman, image = hangman_start)
 hangman_label.pack(pady=50)
 
-word_label = tk.Label(root, text=word)
-word_label.pack(side="top")
+#word_label = tk.Label(root, text=word)
+#word_label.pack(side="top")
+print(word)
 
 letters = list(word)
 
@@ -63,9 +64,13 @@ def show():
     if eingabe.lower() in letters:
         if eingabe.upper() in letters:
             letter0.configure(text=letters[0])
-        for i in range(len(letters)):
-            if letters[i] == eingabe:
-                globals()["letter%s" %i].configure(text=eingabe)
+            for i in range(len(letters)):
+                if letters[i] == eingabe:
+                    globals()["letter%s" %i].configure(text=eingabe)
+        else:
+            for i in range(len(letters)):
+                if letters[i] == eingabe:
+                    globals()["letter%s" %i].configure(text=eingabe)
     else:
         draw_hangman()
     letter_entry.delete(0)
