@@ -60,12 +60,12 @@ def check_entry_error(event):
  
 def show():
     eingabe = letter_entry.get()
-    if eingabe in letters:
+    if eingabe.lower() in letters:
+        if eingabe.upper() in letters:
+            letter0.configure(text=letters[0])
         for i in range(len(letters)):
             if letters[i] == eingabe:
                 globals()["letter%s" %i].configure(text=eingabe)
-    if eingabe.upper() in letters:
-        letter0.configure(text=letters[0])
     else:
         draw_hangman()
     letter_entry.delete(0)
