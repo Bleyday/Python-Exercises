@@ -134,25 +134,32 @@ def draw_hangman():
         print("verloren")
 def new_word():
     for widget in word_frame.winfo_children():
-        if isinstance(widget, Frame):
-            continue
         widget.destroy()
 
     word = words[random.randint(0, 239653)]
+    global letters
     letters = list(word)
+
+    strich_frame = tk.Frame(word_frame)
+    strich_frame.pack(side="bottom")
 
     for i in range(len(letters)-1):
         globals()['letter%s' % i] = tk.Label(word_frame, text=" ", font="Consolas")
         globals()['letter%s' % i].pack(side="left")
         tk.Label(strich_frame, text="_", font="Consolas").pack(side="left")
     
+    print(word)
+    hangman_start = ImageTk.PhotoImage(Image.open("Hangman\Assets\hangman.png"))
+    hangman_label.configure(image=hangman_start)
+    hangman_label.image = hangman_start
+    global fails 
     fails = 11
 
 letter_entry = tk.Entry(root, width=10)
 letter_entry.pack(side="bottom", pady=25)
 root.bind('<Return>', check_entry_error)
 
-btn = tk.Button(root, text="Test", command=new_word)
+btn = tk.Button(root, text="Neues Wort", command=new_word)
 btn.pack()
 
 #Run GUI
