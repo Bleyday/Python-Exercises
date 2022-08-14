@@ -1,4 +1,3 @@
-from email.mime import image
 import random
 from PIL import Image, ImageTk
 import tkinter as tk
