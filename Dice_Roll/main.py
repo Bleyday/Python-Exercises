@@ -9,22 +9,26 @@ def roll_the_dice():
     label1.configure(image=image1)
     label1.image = image1
 
+def check_dices(event):
+    
+
 root = tk.Tk()
 root.title("Roll the Dice!")
 root.geometry("300x600")
 
-info = tk.Label(root, text ="What number will you get?")
 btn = tk.Button(root, text="Roll the Dice!", command=roll_the_dice)
 
-image1 = ImageTk.PhotoImage(Image.open(random.choice(dice)))
+count_dices_label = tk.Label(root, text ="How many Dices do you want to roll?")
+count_dices_label.pack()
+count_dice_entry = tk.Entry(root)
+count_dice_entry.pack()
 
-# construct a label widget for image
+image1 = ImageTk.PhotoImage(Image.open(random.choice(dice)))
 label1 = tk.Label(root, image=image1)
 label1.image = image1
 
-info.pack()
 btn.pack()
 label1.pack( expand=True)
 
-
+root.bind('<Return>', check_dices)
 root.mainloop()

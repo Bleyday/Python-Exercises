@@ -22,7 +22,7 @@ root.geometry("700x800")
 hangman = tk.Frame(root)
 hangman.pack()
 
-used = tk.Frame(root, bg="white", highlightbackground="black", highlightthickness=1, height=800)
+used = tk.Frame(root, highlightbackground="black", highlightthickness=1, height=800)
 used.pack(side="right")
 
 word_frame = tk.Frame(root, highlightbackground="black", highlightthickness=1)
