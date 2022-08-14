@@ -1,3 +1,4 @@
+from operator import index
 import tkinter as tk
 from tkinter import messagebox
 import random
@@ -35,6 +36,8 @@ strich_frame.pack(side="bottom")
 #Labels und Entrys
 used_label = tk.Label(used, text="benutzte Buchstaben")
 used_label.pack(side="top")
+used_letters_list = tk.Label(used, text="")
+used_letters_list.pack()
 
 #Hangman Canvas
 hangman_start = ImageTk.PhotoImage(Image.open("Hangman\Assets\hangman.png"))
@@ -57,10 +60,14 @@ def check_entry_error(event):
         var = letter_entry.get()
         if len(var) > 1 or isinstance(int(var), int):
             messagebox.showerror('Entry Error','Pls only one character and no nmbrs')
+        elif var.index("end") == 0:
+            messagebox.showerror('Entry Error','At least one character')
     except:
         print("allowed")
-        show()
- 
+        used_letters_list.configure(text=used_letters)
+        show() 
+
+used_letters = []
 def show():
     eingabe = letter_entry.get()
     if eingabe in letters:
@@ -73,6 +80,11 @@ def show():
             letter0.configure(text=letters[0])
     else:
         draw_hangman()
+        if eingabe in used_letters:
+            print("exists")
+        else:
+            used_letters.append(eingabe)
+
     letter_entry.delete(0)
 fails = 11
 def draw_hangman():
@@ -131,8 +143,12 @@ def draw_hangman():
         hangman_start = ImageTk.PhotoImage(Image.open("Hangman\Assets\hangman_11.png"))
         hangman_label.configure(image=hangman_start)
         hangman_label.image = hangman_start
-        print("verloren")
+        messagebox.showinfo("Verloren", "Du hast verloren!")
+        clear_used_letters()
+        new_word()
+
 def new_word():
+    clear_used_letters()
     for widget in word_frame.winfo_children():
         widget.destroy()
 
@@ -154,6 +170,10 @@ def new_word():
     hangman_label.image = hangman_start
     global fails 
     fails = 11
+
+def clear_used_letters():
+    used_letters_list.configure(text="")
+    used_letters.clear()
 
 letter_entry = tk.Entry(root, width=10)
 letter_entry.pack(side="bottom", pady=25)
