@@ -47,7 +47,10 @@ hangman_label.pack(pady=50)
 print(word)
 
 letters = list(word)
-count_letters = len(word)-1
+word = word.lower()
+count_letters = list(word)
+del count_letters[-1]
+
 print("buchstaben anzahl:" +str(count_letters))
 
 for i in range(len(letters)-1):
@@ -66,13 +69,15 @@ def check_entry_error(event):
         show()
 
 def iswin():
-    global count_letters
-    count_letters = count_letters -1
-    if count_letters == 0:
+    for letter in count_letters:
+        if letter == letter_entry.get():
+            count_letters.remove(letter)
+            print(count_letters)
+    if len(count_letters) == 0:
         messagebox.showinfo("Win", "you win!")
         letter_entry.configure(state="disabled")
     else :
-        print(count_letters)
+        print(len(count_letters))
         
 used_letters = []
 def show():
@@ -163,13 +168,21 @@ def draw_hangman():
         clear_used_letters()
 
 def new_word():
+    #Clear Frames
     for widget in word_frame.winfo_children():
         widget.destroy()
     clear_used_letters()
+
+    #generate new words and list
     word = words[random.randint(0, 239653)]
     global letters
     letters = list(word)
+    word = word.lower()
+    global count_letters
+    count_letters = list(word)
+    del count_letters[-1]
 
+    #generate new empty lists
     strich_frame = tk.Frame(word_frame)
     strich_frame.pack(side="bottom")
 
@@ -179,13 +192,13 @@ def new_word():
         tk.Label(strich_frame, text="_", font="Consolas").pack(side="left")
     
     print(word)
+    #reset hangman pics
     hangman_start = ImageTk.PhotoImage(Image.open("Hangman\Assets\hangman.png"))
     hangman_label.configure(image=hangman_start)
     hangman_label.image = hangman_start
     global fails 
     fails = 11
-    global count_letters
-    count_letters = len(word)-1
+ 
     letter_entry.configure(state="normal")
     letter_entry.delete(0)
 
