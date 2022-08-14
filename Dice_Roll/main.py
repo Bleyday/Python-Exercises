@@ -11,6 +11,11 @@ def roll_the_dice():
 
 count_labels = []
 def count_dices(event):
+    global count_labels
+    if len(count_labels) > 0:
+        for labels in count_labels:
+            globals()["dice%s" %labels].destroy()
+    count_labels.clear()
     count = int(count_dice_entry.get())
     image1 = ImageTk.PhotoImage(Image.open(random.choice(dice)))
     for i in range(count):
@@ -18,7 +23,6 @@ def count_dices(event):
         globals()['dice%s' % i].pack(expand= "true", padx=10, side="left" )
         globals()['dice%s' % i].image = image1
 
-        global count_labels
         count_labels.append(i)
 
 root = tk.Tk()
