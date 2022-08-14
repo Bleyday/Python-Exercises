@@ -3,8 +3,6 @@ import tkinter as tk
 from tkinter import messagebox
 import random
 from PIL import Image, ImageTk
-import sys
-import os
 
 words = []
 with open("Hangman\worliste.txt", "r") as f:
@@ -49,6 +47,8 @@ hangman_label.pack(pady=50)
 print(word)
 
 letters = list(word)
+count_letters = len(word)-1
+print("buchstaben anzahl:" +str(count_letters))
 
 for i in range(len(letters)-1):
     globals()['letter%s' % i] = tk.Label(word_frame, text=" ", font="Consolas")
@@ -58,34 +58,48 @@ for i in range(len(letters)-1):
 def check_entry_error(event):
     try:
         var = letter_entry.get()
-        if len(var) > 1 or isinstance(int(var), int):
-            messagebox.showerror('Entry Error','Pls only one character and no nmbrs')
-        elif var.index("end") == 0:
+        if len(var) == 0:
             messagebox.showerror('Entry Error','At least one character')
+        elif len(var) > 1 or isinstance(int(var), int):
+            messagebox.showerror('Entry Error','Pls only one character and no nmbrs')
     except:
-        print("allowed")
-        used_letters_list.configure(text=used_letters)
-        show() 
+        show()
 
+def iswin():
+    global count_letters
+    count_letters = count_letters -1
+    if count_letters == 0:
+        messagebox.showinfo("Win", "you win!")
+        letter_entry.configure(state="disabled")
+    else :
+        print(count_letters)
+        
 used_letters = []
 def show():
     eingabe = letter_entry.get()
+    
     if eingabe in letters:
         for i in range(len(letters)):
             if letters[i] == eingabe:
                 globals()["letter%s" %i].configure(text=eingabe)
+                iswin()
         if eingabe.upper() in letters:
             letter0.configure(text=letters[0])
+            iswin()
     elif eingabe.upper() in letters:
             letter0.configure(text=letters[0])
+            iswin()
     else:
-        draw_hangman()
         if eingabe in used_letters:
-            print("exists")
+                print("exists")
         else:
             used_letters.append(eingabe)
-
+            used_letters_list.configure(text=used_letters)
+            
+        draw_hangman()
+            
     letter_entry.delete(0)
+    
 fails = 11
 def draw_hangman():
     global fails
@@ -144,14 +158,14 @@ def draw_hangman():
         hangman_label.configure(image=hangman_start)
         hangman_label.image = hangman_start
         messagebox.showinfo("Verloren", "Du hast verloren!")
-        clear_used_letters()
+        letter_entry.delete(0)
         new_word()
+        clear_used_letters()
 
 def new_word():
-    clear_used_letters()
     for widget in word_frame.winfo_children():
         widget.destroy()
-
+    clear_used_letters()
     word = words[random.randint(0, 239653)]
     global letters
     letters = list(word)
@@ -170,11 +184,15 @@ def new_word():
     hangman_label.image = hangman_start
     global fails 
     fails = 11
+    global count_letters
+    count_letters = len(word)-1
+    letter_entry.configure(state="normal")
+    letter_entry.delete(0)
 
 def clear_used_letters():
     used_letters_list.configure(text="")
     used_letters.clear()
-
+    
 letter_entry = tk.Entry(root, width=10)
 letter_entry.pack(side="bottom", pady=25)
 root.bind('<Return>', check_entry_error)
